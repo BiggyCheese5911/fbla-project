@@ -1,6 +1,5 @@
 body{
     background-image: url(sky-bg.png);
-    /* background-repeat: no-repeat; */
     background-size: cover;
     width: 100%;
     margin: 0 auto;
@@ -8,35 +7,28 @@ body{
 }
 
 #player {
-    height: 150px;
-    width: 150px;
+    height: 100px;
+    width: 100px;
     position: absolute;
     top: 100px;
     left: 100px;
+    background-color: purple;
 
     animation-name: bobbing;
-  animation-duration: 0.8s; /* Control the speed */
-  animation-iteration-count: infinite; /* Makes it loop forever */
-  animation-timing-function: ease-in-out; /* Smooth start and end */
-  animation-direction: alternate; /* Moves up, then reverses down smoothly */
+  animation-duration: 0.8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
 }
 
 @keyframes bobbing {
     from {
-      transform: translateY(0px); /* Starting position */
+      transform: translateY(0px);
     }
     to {
-      transform: translateY(-20px); /* Moves up 20 pixels */
+      transform: translateY(-20px);
     }
   }
-
-.moving-box {
-    width: 50px;
-    height: 500px;
-    background-color: grey;
-    position: absolute;
-    transform: translateX(0);
-}
 
 #directions{
     background-color: black;
@@ -63,4 +55,9 @@ body{
     padding: 13px;
     background-color: lightgreen;
     border: solid white 5px;
+}
+
+canvas {
+    height: 100%;
+    width: 100%;
 }

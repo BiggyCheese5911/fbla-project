@@ -52,11 +52,6 @@ function game() {
 
   requestAnimationFrame(updatePosition);
 
-  const myBox = document.getElementById("myBox");
-
-  let positionX = window.innerWidth;
-  const speed = -10;
-
   function mvPlane() {
     positionX += speed;
     myBox.style.transform = `translateX(${positionX}px)`;
@@ -71,4 +66,64 @@ function game() {
   }
 
   requestAnimationFrame(mvPlane);
+   spawner()
 }
+
+
+  function spawner() {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const objects = [];
+    let spawnRate = 1000;
+    let lastSpawnTime = Date.now();
+
+    const objectTypes = [
+        { type: 'red', color: 'red', radius: 10 },
+        { type: 'blue', color: 'blue', radius: 15 },
+        { type: 'green', color: 'green', radius: 8 }
+    ];
+
+    function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function spawnRandomObject() {
+        const randomIndex = Math.floor(Math.random() * objectTypes.length);
+        const chosenType = objectTypes[randomIndex];
+        const newObject = {
+            type: chosenType.type,
+            color: chosenType.color,
+            radius: chosenType.radius,
+            x: getRandomNumber(chosenType.radius, canvas.width - chosenType.radius),
+            y: 0 - chosenType.radius
+        };
+        objects.push(newObject);
+    }
+
+    function update() {
+        const currentTime = Date.now();
+        if (currentTime > lastSpawnTime + spawnRate) {
+            lastSpawnTime = currentTime;
+            spawnRandomObject();
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < objects.length; i++) {
+            const object = objects[i];
+            object.y += 2;
+            ctx.beginPath();
+            ctx.arc(object.x, object.y, object.radius, 0, Math.PI * 2);
+            ctx.fillStyle = object.color;
+            ctx.fill();
+
+            if (object.y > canvas.height + object.radius) {
+                objects.splice(i, 1);
+                i--;
+                spawnRate = spawnRate - 5;
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    update();
+  }
