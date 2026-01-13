@@ -51,21 +51,6 @@ function game() {
   }
 
   requestAnimationFrame(updatePosition);
-
-  function mvPlane() {
-    positionX += speed;
-    myBox.style.transform = `translateX(${positionX}px)`;
-
-    const boxWidth = myBox.offsetWidth;
-
-    if (positionX < -boxWidth) {
-      positionX = window.innerWidth;
-    }
-
-    requestAnimationFrame(mvPlane);
-  }
-
-  requestAnimationFrame(mvPlane);
    spawner()
 }
 
@@ -78,9 +63,9 @@ function game() {
     let lastSpawnTime = Date.now();
 
     const objectTypes = [
-        { type: 'red', color: 'red', radius: 10 },
-        { type: 'blue', color: 'blue', radius: 15 },
-        { type: 'green', color: 'green', radius: 8 }
+        { type: 'red', color: 'red', radius: 20 },
+        { type: 'blue', color: 'purple', radius: 15 },
+        { type: 'green', color: 'green', radius: 25 }
     ];
 
     function getRandomNumber(min, max) {
