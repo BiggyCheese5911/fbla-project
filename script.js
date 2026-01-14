@@ -31,26 +31,52 @@ function game() {
     if (e.key === "d" || e.key === "D") keys.d = false;
   });
 
-  function updatePosition() {
-    let topPos = parseInt(
-      window.getComputedStyle(player).getPropertyValue("top")
-    );
-    let leftPos = parseInt(
-      window.getComputedStyle(player).getPropertyValue("left")
-    );
+function updatePosition() {
+  let topPos = parseInt(
+    window.getComputedStyle(player).getPropertyValue("top")
+  );
+  let leftPos = parseInt(
+    window.getComputedStyle(player).getPropertyValue("left")
+  );
 
-    if (keys.w) topPos -= moveSpeed;
-    if (keys.s) topPos += moveSpeed;
-    if (keys.a) leftPos -= moveSpeed;
-    if (keys.d) leftPos += moveSpeed;
+  if (keys.w) topPos -= moveSpeed;
+  if (keys.s) topPos += moveSpeed;
+  if (keys.a) leftPos -= moveSpeed;
+  if (keys.d) leftPos += moveSpeed;
 
-    player.style.top = topPos + "px";
-    player.style.left = leftPos + "px";
+  // screen boundries
+  const playerWidth = player.offsetWidth;
+  const playerHeight = player.offsetHeight;
 
-    requestAnimationFrame(updatePosition);
-  }
+  const maxX = window.innerWidth - playerWidth;
+  const maxY = window.innerHeight - playerHeight;
+
+  // clamp values
+  leftPos = Math.max(0, Math.min(leftPos, maxX));
+  topPos = Math.max(0, Math.min(topPos, maxY));
+
+  player.style.top = topPos + "px";
+  player.style.left = leftPos + "px";
 
   requestAnimationFrame(updatePosition);
+}
+
+  requestAnimationFrame(updatePosition);
+
+  function mvPlane() {
+    positionX += speed;
+    myBox.style.transform = `translateX(${positionX}px)`;
+
+    const boxWidth = myBox.offsetWidth;
+
+    if (positionX < -boxWidth) {
+      positionX = window.innerWidth;
+    }
+
+    requestAnimationFrame(mvPlane);
+  }
+
+  requestAnimationFrame(mvPlane);
    spawner()
 }
 
@@ -60,12 +86,13 @@ function game() {
     const ctx = canvas.getContext('2d');
     const objects = [];
     let spawnRate = 1000;
+    const minSpawnRate = 200;
     let lastSpawnTime = Date.now();
 
     const objectTypes = [
-        { type: 'red', color: 'red', radius: 20 },
-        { type: 'blue', color: 'purple', radius: 15 },
-        { type: 'green', color: 'green', radius: 25 }
+        { type: 'red', color: 'red', radius: 10 },
+        { type: 'blue', color: 'blue', radius: 15 },
+        { type: 'green', color: 'green', radius: 8 }
     ];
 
     function getRandomNumber(min, max) {
@@ -103,7 +130,7 @@ function game() {
             if (object.y > canvas.height + object.radius) {
                 objects.splice(i, 1);
                 i--;
-                spawnRate = spawnRate - 5;
+                spawnRate = Math.max(minSpawnRate, spawnRate - 5);
             }
         }
 
