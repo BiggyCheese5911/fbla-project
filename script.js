@@ -6,6 +6,13 @@ function hide() {
 
 function game() {
 
+  let score = 0;
+const scoreEl = document.getElementById("score");
+
+setInterval(() => {
+  score++;
+  scoreEl.textContent = "Score: " + score;
+}, 1000);
 
   let player = document.getElementById("player");
   let moveSpeed = 10;
@@ -63,20 +70,6 @@ function updatePosition() {
 
   requestAnimationFrame(updatePosition);
 
-  function mvPlane() {
-    positionX += speed;
-    myBox.style.transform = `translateX(${positionX}px)`;
-
-    const boxWidth = myBox.offsetWidth;
-
-    if (positionX < -boxWidth) {
-      positionX = window.innerWidth;
-    }
-
-    requestAnimationFrame(mvPlane);
-  }
-
-  requestAnimationFrame(mvPlane);
    spawner()
 }
 
